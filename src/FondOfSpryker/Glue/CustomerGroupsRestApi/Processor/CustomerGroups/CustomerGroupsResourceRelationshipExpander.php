@@ -2,11 +2,35 @@
 
 namespace FondOfSpryker\Glue\CustomerGroupsRestApi\Processor\CustomerGroups;
 
+use FondOfSpryker\Glue\CustomerGroupsRestApi\CustomerGroupsRestApiConfig;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceBuilderInterface;
 use Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface;
 
 class CustomerGroupsResourceRelationshipExpander implements CustomerGroupsResourceRelationshipExpanderInterface
 {
+    /**
+     * @var \FondOfSpryker\Glue\CustomerGroupsRestApi\Processor\CustomerGroups\CustomerGroupsMapperInterface
+     */
+    protected $customerGroupsMapper;
+
+    /**
+     * @var \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceBuilderInterface
+     */
+    protected $restResourceBuilder;
+
+    /**
+     * @param \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceBuilderInterface $restResourceBuilder
+     * @param \FondOfSpryker\Glue\CustomerGroupsRestApi\Processor\CustomerGroups\CustomerGroupsMapperInterface $customerGroupsMapper
+     */
+    public function __construct(
+        RestResourceBuilderInterface $restResourceBuilder,
+        CustomerGroupsMapperInterface $customerGroupsMapper
+    ) {
+        $this->customerGroupsMapper = $customerGroupsMapper;
+        $this->restResourceBuilder = $restResourceBuilder;
+    }
+
     /**
      * @param \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceInterface[] $resources
      * @param \Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface $restRequest
@@ -25,24 +49,24 @@ class CustomerGroupsResourceRelationshipExpander implements CustomerGroupsResour
                 continue;
             }
 
-            /*$brandRelationTransfer = $companyTransfer->getBrandRelation();
+            $customerGroupCollectionTransfer = $payload->getCustomerGroupCollection();
 
-            if ($brandRelationTransfer === null) {
+            if ($customerGroupCollectionTransfer === null) {
                 continue;
             }
 
-            foreach ($brandRelationTransfer->getBrands() as $brandTransfer) {
-                $restBrandsResponseAttributesTransfer = $this->brandsMapper
-                    ->mapRestBrandsResponseAttributesTransfer($brandTransfer);
+            foreach ($customerGroupCollectionTransfer->getGroups() as $customerGroupTransfer) {
+                $restCustomerGroupsAttributesTransfer = $this->customerGroupsMapper
+                    ->mapRestCustomerGroupsAttributesTransfer($customerGroupTransfer);
 
-                $brandResource = $this->restResourceBuilder->createRestResource(
-                    BrandsRestApiConfig::RESOURCE_BRANDS,
-                    $brandTransfer->getUuid(),
-                    $restBrandsResponseAttributesTransfer
+                $customerGroupsResource = $this->restResourceBuilder->createRestResource(
+                    CustomerGroupsRestApiConfig::RESOURCE_CUSTOMER_GROUPS,
+                    $customerGroupTransfer->getUuid(),
+                    $restCustomerGroupsAttributesTransfer
                 );
 
-                $resource->addRelationship($brandResource);
-            }*/
+                $resource->addRelationship($customerGroupsResource);
+            }
         }
 
         return $resources;
