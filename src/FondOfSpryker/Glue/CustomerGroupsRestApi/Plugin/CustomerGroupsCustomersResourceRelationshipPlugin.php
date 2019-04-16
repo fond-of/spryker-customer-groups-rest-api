@@ -22,7 +22,6 @@ class CustomerGroupsCustomersResourceRelationshipPlugin extends AbstractPlugin i
      * @param \Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface $restRequest
      *
      * @return void
-     * @return void
      */
     public function addResourceRelationships(array $resources, RestRequestInterface $restRequest): void
     {

@@ -2,7 +2,6 @@
 
 namespace FondOfSpryker\Glue\CustomerGroupsRestApi\Processor\CustomerGroups;
 
-use FondOfSpryker\Glue\BrandsRestApi\BrandsRestApiConfig;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface;
 
@@ -26,9 +25,7 @@ class CustomerGroupsResourceRelationshipExpander implements CustomerGroupsResour
                 continue;
             }
 
-            $payload->getC
-
-            $brandRelationTransfer = $companyTransfer->getBrandRelation();
+            /*$brandRelationTransfer = $companyTransfer->getBrandRelation();
 
             if ($brandRelationTransfer === null) {
                 continue;
@@ -45,7 +42,7 @@ class CustomerGroupsResourceRelationshipExpander implements CustomerGroupsResour
                 );
 
                 $resource->addRelationship($brandResource);
-            }
+            }*/
         }
 
         return $resources;
