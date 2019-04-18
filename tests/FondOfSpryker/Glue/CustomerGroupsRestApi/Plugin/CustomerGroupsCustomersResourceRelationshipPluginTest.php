@@ -6,14 +6,13 @@ use Codeception\Test\Unit;
 use FondOfSpryker\Glue\CustomerGroupsRestApi\CustomerGroupsRestApiConfig;
 use FondOfSpryker\Glue\CustomerGroupsRestApi\CustomerGroupsRestApiFactory;
 use FondOfSpryker\Glue\CustomerGroupsRestApi\Processor\CustomerGroups\CustomerGroupsResourceRelationshipExpanderInterface;
-use ReflectionClass;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceInterface;
 use Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface;
 
 class CustomerGroupsCustomersResourceRelationshipPluginTest extends Unit
 {
     /**
-     * @var \FondOfSpryker\Glue\CustomerGroupsRestApi\Plugin\CustomerGroupsCustomersResourceRelationshipPlugin
+     * @var \FondOfSpryker\Glue\CustomerGroupsRestApi\Plugin\CustomerGroupsCustomersResourceRelationshipPlugin|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $customerGroupsCustomersResourceRelationshipPlugin;
 
@@ -64,26 +63,9 @@ class CustomerGroupsCustomersResourceRelationshipPluginTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->customerGroupsCustomersResourceRelationshipPlugin = new CustomerGroupsCustomersResourceRelationshipPlugin();
-
-        $this->addFactoryOverReflection();
-    }
-
-    /**
-     * @throws
-     *
-     * @return void
-     */
-    protected function addFactoryOverReflection(): void
-    {
-        $reflection = new ReflectionClass(get_class($this->customerGroupsCustomersResourceRelationshipPlugin));
-
-        $property = $reflection->getParentClass()->getProperty('factory');
-        $property->setAccessible(true);
-        $property->setValue(
-            $this->customerGroupsCustomersResourceRelationshipPlugin,
-            $this->customerGroupsRestApiFactoryMock
-        );
+        $this->customerGroupsCustomersResourceRelationshipPlugin = $this->getMockBuilder(CustomerGroupsCustomersResourceRelationshipPlugin::class)
+            ->setMethods(['getFactory'])
+            ->getMock();
     }
 
     /**
@@ -91,6 +73,10 @@ class CustomerGroupsCustomersResourceRelationshipPluginTest extends Unit
      */
     public function testAddResourceRelationships(): void
     {
+        $this->customerGroupsCustomersResourceRelationshipPlugin->expects($this->atLeastOnce())
+            ->method('getFactory')
+            ->willReturn($this->customerGroupsRestApiFactoryMock);
+
         $this->customerGroupsRestApiFactoryMock->expects($this->atLeastOnce())
             ->method('createCustomerGroupsResourceRelationshipExpander')
             ->willReturn($this->customerGroupsResourceRelationshipExpanderMock);

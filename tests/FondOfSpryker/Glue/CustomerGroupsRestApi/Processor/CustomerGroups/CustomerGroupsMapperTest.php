@@ -3,6 +3,8 @@
 namespace FondOfSpryker\Glue\CustomerGroupsRestApi\Processor\CustomerGroups;
 
 use Codeception\Test\Unit;
+use Generated\Shared\Transfer\CustomerGroupTransfer;
+use Generated\Shared\Transfer\RestCustomerGroupsAttributesTransfer;
 
 class CustomerGroupsMapperTest extends Unit
 {
@@ -23,9 +25,8 @@ class CustomerGroupsMapperTest extends Unit
     {
         parent::_before();
 
-        $this->customerGroupTransferMock = $this->getMockBuilder('\\Generated\\Shared\\Transfer\\CustomerGroupTransfer')
+        $this->customerGroupTransferMock = $this->getMockBuilder(CustomerGroupTransfer::class)
             ->disableOriginalConstructor()
-            ->setMethods(['toArray'])
             ->getMock();
 
         $this->customerGroupsMapper = new CustomerGroupsMapper();
@@ -36,10 +37,16 @@ class CustomerGroupsMapperTest extends Unit
      */
     public function testMapRestCustomerGroupsAttributesTransfer(): void
     {
-        $this->customerGroupTransferMock->expects($this->atLeastOnce)
+        $this->customerGroupTransferMock->expects($this->atLeastOnce())
             ->method('toArray')
             ->willReturn([]);
 
-        $this->customerGroupsMapper->mapRestCustomerGroupsAttributesTransfer();
+        $restCustomerGroupsAttributesTransfer = $this->customerGroupsMapper
+            ->mapRestCustomerGroupsAttributesTransfer($this->customerGroupTransferMock);
+
+        $this->assertInstanceOf(
+            RestCustomerGroupsAttributesTransfer::class,
+            $restCustomerGroupsAttributesTransfer
+        );
     }
 }

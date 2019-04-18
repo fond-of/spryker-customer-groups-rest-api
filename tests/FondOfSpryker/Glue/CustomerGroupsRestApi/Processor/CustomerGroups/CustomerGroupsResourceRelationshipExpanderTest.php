@@ -4,6 +4,10 @@ namespace FondOfSpryker\Glue\CustomerGroupsRestApi\Processor\CustomerGroups;
 
 use Codeception\Test\Unit;
 use FondOfSpryker\Glue\CustomerGroupsRestApi\CustomerGroupsRestApiConfig;
+use Generated\Shared\Transfer\CustomerGroupCollectionTransfer;
+use Generated\Shared\Transfer\CustomerGroupTransfer;
+use Generated\Shared\Transfer\CustomerTransfer;
+use Generated\Shared\Transfer\RestCustomerGroupsAttributesTransfer;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceBuilderInterface;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceInterface;
 use Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface;
@@ -67,22 +71,19 @@ class CustomerGroupsResourceRelationshipExpanderTest extends Unit
     {
         parent::_before();
 
-        $this->customerTransferMock = $this->getMockBuilder('\\Generated\\Shared\\Transfer\\CustomerTransfer')
+        $this->customerTransferMock = $this->getMockBuilder(CustomerTransfer::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getCustomerGroupCollection'])
             ->getMock();
 
-        $this->customerGroupCollectionTransferMock = $this->getMockBuilder('\\Generated\\Shared\\Transfer\\CustomerGroupCollectionTransfer')
+        $this->customerGroupCollectionTransferMock = $this->getMockBuilder(CustomerGroupCollectionTransfer::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getGroups'])
             ->getMock();
 
-        $this->customerGroupTransferMock = $this->getMockBuilder('\\Generated\\Shared\\Transfer\\CustomerGroupTransfer')
+        $this->customerGroupTransferMock = $this->getMockBuilder(CustomerGroupTransfer::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getUuid'])
             ->getMock();
 
-        $this->restCustomerGroupsAttributesTransferMock = $this->getMockBuilder('\\Generated\\Shared\\Transfer\\RestCustomerGroupsAttributesTransfer')
+        $this->restCustomerGroupsAttributesTransferMock = $this->getMockBuilder(RestCustomerGroupsAttributesTransfer::class)
             ->disableOriginalConstructor()
             ->getMock();
 
