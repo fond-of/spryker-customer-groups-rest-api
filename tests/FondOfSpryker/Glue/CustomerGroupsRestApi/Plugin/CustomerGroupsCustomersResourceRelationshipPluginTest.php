@@ -37,8 +37,6 @@ class CustomerGroupsCustomersResourceRelationshipPluginTest extends Unit
     protected $restResourcesMock;
 
     /**
-     * @throws
-     *
      * @return void
      */
     protected function _before(): void
